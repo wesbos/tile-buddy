@@ -1,0 +1,12 @@
+{
+  "name": "tile-buddy",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

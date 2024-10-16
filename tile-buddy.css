@@ -1,0 +1,42 @@
+:root {
+  --bg: url("./samples/skulls.png");
+}
+
+body {
+  background-image: var(--bg);
+  background-size: calc(var(--size) * 1px);
+  background-position: center;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+html {
+  margin: 0;
+  padding: 0;
+}
+
+.controls {
+  position: absolute;
+  height: 100%;
+  inset: 0;
+  display: flex;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  input[type="range"] {
+    width: 20%;
+    appearance: none;
+    height: 5px;
+    border-radius: 5px;
+    outline: none;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.6);
+  }
+}
+
+body:hover .controls {
+  opacity: 1;
+}
