@@ -1,6 +1,8 @@
+import html2canvas from 'html2canvas-pro';
 const dropzone = document.querySelector('.controls');
 const variableBinders = document.querySelectorAll<HTMLInputElement>('[data-variable]');
-
+const downloadButton = document.querySelector<HTMLButtonElement>('.download');
+const reel = document.querySelector<HTMLDivElement>('.reel');
 interface PromiseWithResolvers<T> {
   promise: Promise<T>;
   resolve: (value: T | PromiseLike<T>) => void;
@@ -70,4 +72,19 @@ variableBinders.forEach((el) => {
   el.addEventListener('input', (e) => {
     document.documentElement.style.setProperty(variable, el.value);
   });
+});
+
+downloadButton?.addEventListener('click', async () => {
+  const canvas: HTMLCanvasElement = await html2canvas(document.body);
+  const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png', 1));
+  if(!blob) return console.error('No blob');
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'image.png';
+  const img = new Image();
+  img.src = url;
+  link.appendChild(img);
+  reel?.appendChild(link);
+
 });
