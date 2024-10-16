@@ -36,8 +36,7 @@ async function getDataTransferItemURL(items: DataTransferItemList) {
   if(!item) return null;
   if(item.kind === 'file') {
     const file = item.getAsFile();
-    // Save the file to the file system
-
+    // TODO Save the file to the file system
     return file? URL.createObjectURL(file) : null;
   }
   if(item.kind === 'string') {
