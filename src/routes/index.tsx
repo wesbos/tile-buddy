@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
-import { samples, midjourneyTiles } from "../samples";
+import { samples } from "../samples";
 
 function labelFromFilename(filename: string) {
   return filename
@@ -31,7 +31,7 @@ function TileBuddy() {
   const firstSample = samples[0] ?? "";
   const [bg, setBg] = useState(`/samples/${firstSample}`);
   const [bgName, setBgName] = useState(labelFromFilename(firstSample));
-  const [size, setSize] = useState(200);
+  const [size, setSize] = useState(1000);
   const [activeIndex, setActiveIndex] = useState(0);
   const [exportW, setExportW] = useState(1920);
   const [exportH, setExportH] = useState(1080);
@@ -43,18 +43,11 @@ function TileBuddy() {
   const aspectRef = useRef(1920 / 1080);
   const previewRef = useRef<HTMLDivElement>(null);
 
-  const allTiles = [
-    ...samples.map((file) => ({
-      src: `/samples/${file}`,
-      alt: labelFromFilename(file),
-      title: labelFromFilename(file),
-    })),
-    ...midjourneyTiles.map((tile) => ({
-      src: tile.url,
-      alt: truncate(tile.prompt),
-      title: tile.prompt,
-    })),
-  ];
+  const allTiles = samples.map((file) => ({
+    src: `/samples/${file}`,
+    alt: labelFromFilename(file),
+    title: labelFromFilename(file),
+  }));
 
   const handleDragOver = useCallback(
     (e: React.DragEvent) => {
@@ -165,7 +158,15 @@ function TileBuddy() {
   };
 
   return (
-    <div className="app">
+    <div
+      className="app"
+      style={
+        {
+          "--bg": `url(${bg})`,
+          "--size": String(size),
+        } as React.CSSProperties
+      }
+    >
       <aside className="sidebar">
         <section>
           <h2>Tile Scale</h2>
@@ -296,14 +297,10 @@ function TileBuddy() {
       >
         <div
           className="preview-surface"
-          style={
-            {
-              "--bg": `url(${bg})`,
-              "--size": String(size),
-              width: effectiveW,
-              height: effectiveH,
-            } as React.CSSProperties
-          }
+          style={{
+            width: effectiveW,
+            height: effectiveH,
+          }}
         >
           <span className="preview-frame-label">
             {effectiveW} × {effectiveH}

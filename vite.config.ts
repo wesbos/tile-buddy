@@ -18,12 +18,9 @@ function manifestPlugin(): Plugin {
   return {
     name: "tile-buddy-manifest",
     configureServer(server) {
-      const dirs = ["public/samples", "midjourey"];
-      for (const dir of dirs) {
-        server.watcher.add(dir);
-      }
+      server.watcher.add("public/samples");
       server.watcher.on("all", async (_event, path) => {
-        if (!path.includes("public/samples") && !path.includes("midjourey")) return;
+        if (!path.includes("public/samples")) return;
         await regenerate();
       });
     },
