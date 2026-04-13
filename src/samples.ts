@@ -1,7 +1,5 @@
 // Auto-generated — run `pnpm generate` to update
 export const samples = [
-  "amber-light-leak.png",
-  "amorphic-blobs.png",
   "black-sandpaper.png",
   "cavalier-victorian.png",
   "embroidered-roses-dark.png",
