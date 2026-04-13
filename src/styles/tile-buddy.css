@@ -1,0 +1,332 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #111;
+  color: #eee;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  height: 100vh;
+}
+
+/* ── Sidebar ── */
+
+.sidebar {
+  background: #1a1a1a;
+  border-right: 1px solid #2a2a2a;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  gap: 1px;
+}
+
+.sidebar section {
+  padding: 16px;
+  background: #1a1a1a;
+}
+
+.sidebar h2 {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #888;
+  margin: 0 0 12px;
+}
+
+/* ── Tile scale slider ── */
+
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.control-row label {
+  font-size: 12px;
+  color: #aaa;
+  min-width: 48px;
+}
+
+.control-row input[type="range"] {
+  flex: 1;
+  appearance: none;
+  height: 4px;
+  border-radius: 2px;
+  background: #333;
+  outline: none;
+}
+
+.control-row input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid #555;
+}
+
+.size-value {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #ccc;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── Export size inputs ── */
+
+.export-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.size-inputs {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.size-input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.size-input-group label {
+  font-size: 11px;
+  color: #888;
+}
+
+.size-input-group input {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #222;
+  color: #eee;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.size-input-group input:focus {
+  border-color: #666;
+}
+
+.size-link {
+  all: unset;
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 4px;
+  border-radius: 4px;
+  color: #666;
+  transition: color 0.15s;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.size-link:hover {
+  color: #aaa;
+}
+
+.size-link.linked {
+  color: #4dabf7;
+}
+
+.size-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.size-presets button {
+  all: unset;
+  cursor: pointer;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: #2a2a2a;
+  color: #aaa;
+  transition: background 0.15s, color 0.15s;
+}
+
+.size-presets button:hover {
+  background: #333;
+  color: #eee;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.toggle-row input[type="checkbox"] {
+  accent-color: #4dabf7;
+  width: 14px;
+  height: 14px;
+  cursor: pointer;
+}
+
+.snap-hint {
+  color: #4dabf7;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+.export-btn {
+  all: unset;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #fff;
+  color: #111;
+  font-size: 13px;
+  font-weight: 600;
+  transition: opacity 0.15s;
+}
+
+.export-btn:hover {
+  opacity: 0.85;
+}
+
+.export-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ── Gallery ── */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(52px, 1fr));
+  gap: 6px;
+}
+
+.gallery-item {
+  all: unset;
+  cursor: pointer;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color 0.15s, scale 0.15s;
+}
+
+.gallery-item:hover {
+  scale: 1.08;
+}
+
+.gallery-item.active {
+  border-color: #4dabf7;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Drop zone hint ── */
+
+.drop-hint {
+  padding: 12px;
+  border: 2px dashed #333;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.drop-hint.dragging {
+  border-color: #4dabf7;
+  color: #4dabf7;
+}
+
+/* ── Preview area ── */
+
+.preview-area {
+  overflow: auto;
+  background: #0d0d0d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-surface {
+  background-image: var(--bg);
+  background-size: calc(var(--size, 200) * 1px);
+  background-position: top left;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.preview-frame-label {
+  position: sticky;
+  bottom: 8px;
+  left: 8px;
+  display: inline-block;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+  margin: 8px;
+}
+
+/* ── Snapshots reel ── */
+
+.reel {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding: 4px 0;
+}
+
+.reel a {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #333;
+  display: block;
+}
+
+.reel img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}

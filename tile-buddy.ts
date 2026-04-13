@@ -74,6 +74,18 @@ variableBinders.forEach((el) => {
   });
 });
 
+// Gallery: switch between pre-generated patterns
+const galleryItems = document.querySelectorAll<HTMLButtonElement>('.gallery-item');
+galleryItems.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const bg = btn.dataset.bg;
+    if (!bg) return;
+    document.documentElement.style.setProperty('--bg', `url(${bg})`);
+    galleryItems.forEach((b) => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
 downloadButton?.addEventListener('click', async () => {
   const canvas: HTMLCanvasElement = await html2canvas(document.body);
   const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png', 1));

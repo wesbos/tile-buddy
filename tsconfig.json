@@ -1,11 +1,16 @@
 {
-  "include": ["./**/*"],
+  "include": ["src/**/*", "vite.config.ts"],
+  "exclude": ["node_modules", "dist"],
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "moduleResolution": "Bundler",
+    "module": "ESNext",
+    "target": "ES2022",
     "strict": true,
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "module": "nodenext",
-    "target": "esnext"
+    "paths": {
+      "~/*": ["./src/*"]
+    }
   }
 }
