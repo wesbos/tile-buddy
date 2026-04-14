@@ -280,6 +280,70 @@ body {
     box-shadow 0.2s ease;
 }
 
+.number-input-wrap {
+  position: relative;
+}
+
+.size-input-group input[type="number"] {
+  padding-right: 28px;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.size-input-group input[type="number"]::-webkit-outer-spin-button,
+.size-input-group input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.number-stepper {
+  position: absolute;
+  right: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: 24px;
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  border-top-right-radius: 7px;
+  border-bottom-right-radius: 7px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.number-input-wrap:hover .number-stepper,
+.number-input-wrap:focus-within .number-stepper {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.number-stepper button {
+  all: unset;
+  flex: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  color: rgb(255 255 255 / 0.8);
+  font-size: 12px;
+  line-height: 1;
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.number-stepper button + button {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.number-stepper button:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.number-stepper button:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .size-input-group input:hover {
   background: rgba(255, 255, 255, 0.14);
 }

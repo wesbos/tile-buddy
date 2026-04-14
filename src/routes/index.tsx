@@ -24,6 +24,8 @@ const PRESETS = [
   { label: "Instagram", w: 1080, h: 1350 },
   { label: "Twitter", w: 1500, h: 500 },
 ];
+const MIN_EXPORT_DIMENSION = 1;
+const MAX_EXPORT_DIMENSION = 7680;
 
 export const Route = createFileRoute("/")({
   component: TileBuddy,
@@ -115,6 +117,19 @@ function TileBuddy() {
     setLinked(!linked);
   }
 
+  function nudgeDimension(
+    value: number,
+    setter: (dimension: number) => void,
+    delta: number
+  ) {
+    setter(
+      Math.max(
+        MIN_EXPORT_DIMENSION,
+        Math.min(MAX_EXPORT_DIMENSION, value + delta)
+      )
+    );
+  }
+
   const effectiveW = snapToTile(exportW);
   const effectiveH = snapToTile(exportH);
 
@@ -192,13 +207,31 @@ function TileBuddy() {
               <div className="size-inputs">
                 <div className="size-input-group">
                   <label>Width</label>
-                  <input
-                    type="number"
-                    value={exportW}
-                    min={1}
-                    max={7680}
-                    onChange={(e) => setWidth(Number(e.target.value))}
-                  />
+                  <div className="number-input-wrap">
+                    <input
+                      type="number"
+                      value={exportW}
+                      min={MIN_EXPORT_DIMENSION}
+                      max={MAX_EXPORT_DIMENSION}
+                      onChange={(e) => setWidth(Number(e.target.value))}
+                    />
+                    <div className="number-stepper">
+                      <button
+                        type="button"
+                        aria-label="Increase width"
+                        onClick={() => nudgeDimension(exportW, setWidth, 1)}
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Decrease width"
+                        onClick={() => nudgeDimension(exportW, setWidth, -1)}
+                      >
+                        -
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <button
                   className={`size-link${linked ? " linked" : ""}`}
@@ -209,13 +242,32 @@ function TileBuddy() {
                 </button>
                 <div className="size-input-group">
                   <label>Height</label>
-                  <input
-                    type="number"
-                    value={exportH}
-                    min={1}
-                    max={7680}
-                    onChange={(e) => setHeight(Number(e.target.value))}
-                  />
+                  <div className="number-input-wrap">
+                    <input
+                      type="number"
+                      value={exportH}
+                      min={MIN_EXPORT_DIMENSION}
+                      max={MAX_EXPORT_DIMENSION}
+                      onChange={(e) => setHeight(Number(e.target.value))}
+                    />
+                    <div className="number-stepper">
+                      <button
+                        type="button"
+                        aria-label="Increase height"
+                        onClick={() => nudgeDimension(exportH, setHeight, 1)}
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Decrease height"
+                        onClick={() => nudgeDimension(exportH, setHeight, -1)}
+                        className="decrement-btn"
+                      >
+                        −
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div className="size-presets">
