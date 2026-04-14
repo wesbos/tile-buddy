@@ -57,7 +57,6 @@ body {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #888;
     margin: 0 0 12px;
   }
   
@@ -253,23 +252,33 @@ body {
 }
 
 .export-btn {
-  all: unset;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgb(255 255 255 / 1);
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: #fff;
-  color: #111;
   font-size: 13px;
-  font-weight: 600;
-  transition: opacity 0.15s;
+  font-weight: 500;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
 .export-btn:hover {
-  opacity: 0.85;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.export-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
 }
 
 .export-btn:disabled {
