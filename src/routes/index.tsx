@@ -185,8 +185,8 @@ function TileBuddy() {
       }
     >
       <GlassDistortionFilter />
-      <div className="sidebar">
-        <aside className="glass-card tile-card">
+      <aside className="sidebar" aria-label="Controls sidebar">
+        <section className="glass-card tile-card">
           <section>
             <h2>Tile Scale</h2>
             <div className="control-row">
@@ -315,9 +315,9 @@ function TileBuddy() {
               </div>
             </section>
           )}
-        </aside>
+        </section>
 
-        <aside className="glass-card patterns-card">
+        <section className="glass-card patterns-card">
           <section>
             <h2>Patterns</h2>
             <div
@@ -344,8 +344,8 @@ function TileBuddy() {
               ))}
             </div>
           </section>
-        </aside>
-      </div>
+        </section>
+      </aside>
 
       <div
         className="preview-area"
