@@ -382,19 +382,29 @@ body {
 
 .drop-hint {
   padding: 12px;
-  border: 2px dashed #333;
+  border: 2px dashed rgba(255, 255, 255, 0.2);
   border-radius: 8px;
   text-align: center;
   font-size: 12px;
-  color: #666;
+  color: rgb(255 255 255 / 0.72);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition:
+    background 0.2s ease,
     border-color 0.15s,
-    color 0.15s;
+    color 0.15s,
+    box-shadow 0.2s ease;
 }
 
 .drop-hint.dragging {
-  border-color: #4dabf7;
-  color: #4dabf7;
+  border-color: rgba(77, 171, 247, 0.9);
+  color: rgb(255 255 255 / 0.96);
+  background: rgba(77, 171, 247, 0.16);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.35);
 }
 
 /* ── Preview area ── */
