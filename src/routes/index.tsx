@@ -2,6 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { samples } from "../samples";
 import { GlassDistortionFilter } from "../components/GlassDistortionFilter";
+import { LinkStateIcon } from "../components/LinkStateIcon";
 
 function labelFromFilename(filename: string) {
   return filename
@@ -204,7 +205,7 @@ function TileBuddy() {
                   onClick={toggleLinked}
                   title={linked ? "Unlink dimensions" : "Link dimensions"}
                 >
-                  {linked ? "🔗" : "⛓️‍💥"}
+                  <LinkStateIcon linked={linked} />
                 </button>
                 <div className="size-input-group">
                   <label>Height</label>
