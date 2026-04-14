@@ -14,7 +14,7 @@ body {
     -apple-system,
     sans-serif;
   background: #111;
-  color: #eee;
+  color: rgb(255 255 255 / 0.92);
 }
 
 .app {
@@ -164,24 +164,40 @@ body {
 
 .size-input-group label {
   font-size: 11px;
-  color: #888;
+  color: rgb(255 255 255 / 0.62);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .size-input-group input {
   width: 100%;
-  padding: 6px 8px;
-  border-radius: 6px;
-  border: 1px solid #333;
-  background: rgb(255 255 255 / 2%);
-  color: #eee;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  color: rgb(255 255 255 / 0.96);
   font-size: 13px;
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   outline: none;
-  transition: border-color 0.15s;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.size-input-group input:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
 .size-input-group input:focus {
-  border-color: #666;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.35);
 }
 
 .size-link {
@@ -231,21 +247,66 @@ body {
 .toggle-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 12px;
-  color: #ccc;
+  color: rgb(255 255 255 / 0.92);
   cursor: pointer;
 }
 
 .toggle-row input[type="checkbox"] {
-  accent-color: #4dabf7;
-  width: 14px;
-  height: 14px;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  display: inline-grid;
+  place-content: center;
+  flex-shrink: 0;
   cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.toggle-row input[type="checkbox"]::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  transform: scale(0);
+  transition: transform 0.15s ease;
+  clip-path: polygon(14% 44%, 0 59%, 42% 100%, 100% 25%, 85% 10%, 40% 72%);
+  background: rgb(255 255 255 / 0.95);
+}
+
+.toggle-row input[type="checkbox"]:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.toggle-row input[type="checkbox"]:focus-visible {
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 0 0 2px rgba(59, 130, 246, 0.35);
+}
+
+.toggle-row input[type="checkbox"]:checked {
+  border-color: rgba(255, 255, 255, 0.32);
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.toggle-row input[type="checkbox"]:checked::before {
+  transform: scale(1);
 }
 
 .snap-hint {
-  color: #4dabf7;
+  color: rgba(0, 0, 0, 0.72);
   font-size: 11px;
   font-variant-numeric: tabular-nums;
   margin-left: auto;
@@ -253,6 +314,7 @@ body {
 
 .export-btn {
   width: 100%;
+  margin-top: 8px;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: rgb(255 255 255 / 1);
