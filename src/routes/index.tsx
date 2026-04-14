@@ -1,6 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { samples } from "../samples";
+import { GlassDistortionFilter } from "../components/GlassDistortionFilter";
 
 function labelFromFilename(filename: string) {
   return filename
@@ -167,126 +168,131 @@ function TileBuddy() {
         } as React.CSSProperties
       }
     >
-      <aside className="sidebar">
-        <section>
-          <h2>Tile Scale</h2>
-          <div className="control-row">
-            <input
-              type="range"
-              min={20}
-              max={1500}
-              value={size}
-              onChange={(e) => setSize(Number(e.target.value))}
-            />
-            <span className="size-value">{size}px</span>
-          </div>
-        </section>
-
-        <section>
-          <h2>Export Size</h2>
-          <div className="export-controls">
-            <div className="size-inputs">
-              <div className="size-input-group">
-                <label>Width</label>
-                <input
-                  type="number"
-                  value={exportW}
-                  min={1}
-                  max={7680}
-                  onChange={(e) => setWidth(Number(e.target.value))}
-                />
-              </div>
-              <button
-                className={`size-link${linked ? " linked" : ""}`}
-                onClick={toggleLinked}
-                title={linked ? "Unlink dimensions" : "Link dimensions"}
-              >
-                {linked ? "🔗" : "⛓️‍💥"}
-              </button>
-              <div className="size-input-group">
-                <label>Height</label>
-                <input
-                  type="number"
-                  value={exportH}
-                  min={1}
-                  max={7680}
-                  onChange={(e) => setHeight(Number(e.target.value))}
-                />
-              </div>
+      <GlassDistortionFilter />
+      <div className="sidebar">
+        <aside className="glass-card tile-card">
+          <section>
+            <h2>Tile Scale</h2>
+            <div className="control-row">
+              <input
+                type="range"
+                min={20}
+                max={1500}
+                value={size}
+                onChange={(e) => setSize(Number(e.target.value))}
+              />
+              <span className="size-value">{size}px</span>
             </div>
-            <div className="size-presets">
-              {PRESETS.map((p) => (
+          </section>
+
+          <section>
+            <h2>Export Size</h2>
+            <div className="export-controls">
+              <div className="size-inputs">
+                <div className="size-input-group">
+                  <label>Width</label>
+                  <input
+                    type="number"
+                    value={exportW}
+                    min={1}
+                    max={7680}
+                    onChange={(e) => setWidth(Number(e.target.value))}
+                  />
+                </div>
                 <button
-                  key={p.label}
-                  onClick={() => applyPreset(p.w, p.h)}
+                  className={`size-link${linked ? " linked" : ""}`}
+                  onClick={toggleLinked}
+                  title={linked ? "Unlink dimensions" : "Link dimensions"}
                 >
-                  {p.label}
+                  {linked ? "🔗" : "⛓️‍💥"}
+                </button>
+                <div className="size-input-group">
+                  <label>Height</label>
+                  <input
+                    type="number"
+                    value={exportH}
+                    min={1}
+                    max={7680}
+                    onChange={(e) => setHeight(Number(e.target.value))}
+                  />
+                </div>
+              </div>
+              <div className="size-presets">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.label}
+                    onClick={() => applyPreset(p.w, p.h)}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+              <label className="toggle-row">
+                <input
+                  type="checkbox"
+                  checked={maintainTile}
+                  onChange={(e) => setMaintainTile(e.target.checked)}
+                />
+                <span>Maintain tile</span>
+                {maintainTile && (effectiveW !== exportW || effectiveH !== exportH) && (
+                  <span className="snap-hint">
+                    → {effectiveW} × {effectiveH}
+                  </span>
+                )}
+              </label>
+              <button
+                className="export-btn"
+                onClick={handleExport}
+                disabled={exporting}
+              >
+                {exporting ? "Exporting…" : `Export PNG (${effectiveW} × ${effectiveH})`}
+              </button>
+            </div>
+          </section>
+
+          {snapshots.length > 0 && (
+            <section>
+              <h2>Exports</h2>
+              <div className="reel">
+                {snapshots.map((url, i) => (
+                  <a key={i} href={url} download="tile-buddy.png">
+                    <img src={url} alt={`Export ${i + 1}`} />
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+        </aside>
+
+        <aside className="glass-card patterns-card">
+          <section>
+            <h2>Patterns</h2>
+            <div
+              className={`drop-hint${dragging ? " dragging" : ""}`}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={handleDrop}
+            >
+              Drop an image here
+            </div>
+            <div className="gallery" style={{ marginTop: 12 }}>
+              {allTiles.map((tile, i) => (
+                <button
+                  key={i}
+                  className={`gallery-item${i === activeIndex ? " active" : ""}`}
+                  onClick={() => {
+                    setBg(tile.src);
+                    setBgName(tile.alt);
+                    setActiveIndex(i);
+                  }}
+                >
+                  <img src={tile.src} alt={tile.alt} title={tile.title} />
                 </button>
               ))}
             </div>
-            <label className="toggle-row">
-              <input
-                type="checkbox"
-                checked={maintainTile}
-                onChange={(e) => setMaintainTile(e.target.checked)}
-              />
-              <span>Maintain tile</span>
-              {maintainTile && (effectiveW !== exportW || effectiveH !== exportH) && (
-                <span className="snap-hint">
-                  → {effectiveW} × {effectiveH}
-                </span>
-              )}
-            </label>
-            <button
-              className="export-btn"
-              onClick={handleExport}
-              disabled={exporting}
-            >
-              {exporting ? "Exporting…" : `Export PNG (${effectiveW} × ${effectiveH})`}
-            </button>
-          </div>
-        </section>
-
-        <section>
-          <h2>Patterns</h2>
-          <div
-            className={`drop-hint${dragging ? " dragging" : ""}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            Drop an image here
-          </div>
-          <div className="gallery" style={{ marginTop: 12 }}>
-            {allTiles.map((tile, i) => (
-              <button
-                key={i}
-                className={`gallery-item${i === activeIndex ? " active" : ""}`}
-              onClick={() => {
-                setBg(tile.src);
-                setBgName(tile.alt);
-                setActiveIndex(i);
-              }}
-              >
-                <img src={tile.src} alt={tile.alt} title={tile.title} />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {snapshots.length > 0 && (
-          <section>
-            <h2>Exports</h2>
-            <div className="reel">
-              {snapshots.map((url, i) => (
-                <a key={i} href={url} download="tile-buddy.png">
-                  <img src={url} alt={`Export ${i + 1}`} />
-                </a>
-              ))}
-            </div>
           </section>
-        )}
-      </aside>
+        </aside>
+      </div>
 
       <div
         className="preview-area"
