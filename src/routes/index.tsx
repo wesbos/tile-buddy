@@ -318,32 +318,34 @@ function TileBuddy() {
         </section>
 
         <section className="glass-card patterns-card">
-          <section>
-            <h2>Patterns</h2>
-            <div
-              className={`drop-hint${dragging ? " dragging" : ""}`}
-              onDragOver={handleDragOver}
-              onDragLeave={handleDragLeave}
-              onDrop={handleDrop}
-            >
-              Drop an image here
-            </div>
-            <div className="gallery" style={{ marginTop: 12 }}>
-              {allTiles.map((tile, i) => (
-                <button
-                  key={i}
-                  className={`gallery-item${i === activeIndex ? " active" : ""}`}
-                  onClick={() => {
-                    setBg(tile.src);
-                    setBgName(tile.alt);
-                    setActiveIndex(i);
-                  }}
-                >
-                  <img src={tile.src} alt={tile.alt} title={tile.title} />
-                </button>
-              ))}
-            </div>
-          </section>
+          <div className="patterns-card-scroll">
+            <section>
+              <h2>Patterns</h2>
+              <div
+                className={`drop-hint${dragging ? " dragging" : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                Drop an image here
+              </div>
+              <div className="gallery" style={{ marginTop: 12 }}>
+                {allTiles.map((tile, i) => (
+                  <button
+                    key={i}
+                    className={`gallery-item${i === activeIndex ? " active" : ""}`}
+                    onClick={() => {
+                      setBg(tile.src);
+                      setBgName(tile.alt);
+                      setActiveIndex(i);
+                    }}
+                  >
+                    <img src={tile.src} alt={tile.alt} title={tile.title} />
+                  </button>
+                ))}
+              </div>
+            </section>
+          </div>
         </section>
       </aside>
 
