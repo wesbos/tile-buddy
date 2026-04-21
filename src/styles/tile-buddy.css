@@ -91,17 +91,12 @@ body {
 }
 
 .patterns-card {
-  flex: 0 1 auto;
-  min-height: 0;
-  max-height: 100%;
   padding-bottom: 0;
 }
 
 .patterns-card-scroll {
-  min-height: 0;
-  max-height: 100%;
   overflow-y: auto;
-  -ms-overflow-style: none;
+  -ms-overflow-style: none; 
   scrollbar-width: none;
 }
 
@@ -166,18 +161,11 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: linear-gradient(
-    155deg,
-    rgb(255 255 255) 0%,
-    rgb(236 244 255) 34%,
-    rgb(197 211 233) 68%,
-    rgb(169 184 210) 100%
-  );
-  border: 1px solid rgb(173 188 213);
+  background: transparent;
+  border: 3px solid rgb(255 255 255 / 0.95);
   box-shadow:
-    0 5px 12px rgba(0, 0, 0, 0.34),
-    inset 0 1px 1px rgb(255 255 255),
-    inset 0 -2px 4px rgb(145 162 192);
+    0 2px 6px rgb(0 0 0 / 0.35),
+    inset 0 1px 1px rgb(255 255 255 / 0.35);
   cursor: pointer;
   transition:
     transform 0.15s ease,
@@ -187,11 +175,6 @@ body {
 .control-row input[type="range"]:hover {
   border-color: rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.14);
-}
-
-.control-row input[type="range"]:hover::-webkit-slider-thumb,
-.control-row input[type="range"]:hover::-moz-range-thumb {
-  transform: scale(1.04);
 }
 
 .control-row input[type="range"]:focus-visible {
