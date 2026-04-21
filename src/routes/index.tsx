@@ -1,6 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { samples } from "../samples";
+import { GlassDistortionFilter } from "../components/GlassDistortionFilter";
+import { LinkStateIcon } from "../components/LinkStateIcon";
 
 function labelFromFilename(filename: string) {
   return filename
@@ -22,6 +24,8 @@ const PRESETS = [
   { label: "Instagram", w: 1080, h: 1350 },
   { label: "Twitter", w: 1500, h: 500 },
 ];
+const MIN_EXPORT_DIMENSION = 1;
+const MAX_EXPORT_DIMENSION = 7680;
 
 export const Route = createFileRoute("/")({
   component: TileBuddy,
@@ -113,6 +117,19 @@ function TileBuddy() {
     setLinked(!linked);
   }
 
+  function nudgeDimension(
+    value: number,
+    setter: (dimension: number) => void,
+    delta: number
+  ) {
+    setter(
+      Math.max(
+        MIN_EXPORT_DIMENSION,
+        Math.min(MAX_EXPORT_DIMENSION, value + delta)
+      )
+    );
+  }
+
   const effectiveW = snapToTile(exportW);
   const effectiveH = snapToTile(exportH);
 
@@ -167,125 +184,169 @@ function TileBuddy() {
         } as React.CSSProperties
       }
     >
-      <aside className="sidebar">
-        <section>
-          <h2>Tile Scale</h2>
-          <div className="control-row">
-            <input
-              type="range"
-              min={20}
-              max={1500}
-              value={size}
-              onChange={(e) => setSize(Number(e.target.value))}
-            />
-            <span className="size-value">{size}px</span>
-          </div>
-        </section>
-
-        <section>
-          <h2>Export Size</h2>
-          <div className="export-controls">
-            <div className="size-inputs">
-              <div className="size-input-group">
-                <label>Width</label>
-                <input
-                  type="number"
-                  value={exportW}
-                  min={1}
-                  max={7680}
-                  onChange={(e) => setWidth(Number(e.target.value))}
-                />
-              </div>
-              <button
-                className={`size-link${linked ? " linked" : ""}`}
-                onClick={toggleLinked}
-                title={linked ? "Unlink dimensions" : "Link dimensions"}
-              >
-                {linked ? "🔗" : "⛓️‍💥"}
-              </button>
-              <div className="size-input-group">
-                <label>Height</label>
-                <input
-                  type="number"
-                  value={exportH}
-                  min={1}
-                  max={7680}
-                  onChange={(e) => setHeight(Number(e.target.value))}
-                />
-              </div>
-            </div>
-            <div className="size-presets">
-              {PRESETS.map((p) => (
-                <button
-                  key={p.label}
-                  onClick={() => applyPreset(p.w, p.h)}
-                >
-                  {p.label}
-                </button>
-              ))}
-            </div>
-            <label className="toggle-row">
-              <input
-                type="checkbox"
-                checked={maintainTile}
-                onChange={(e) => setMaintainTile(e.target.checked)}
-              />
-              <span>Maintain tile</span>
-              {maintainTile && (effectiveW !== exportW || effectiveH !== exportH) && (
-                <span className="snap-hint">
-                  → {effectiveW} × {effectiveH}
-                </span>
-              )}
-            </label>
-            <button
-              className="export-btn"
-              onClick={handleExport}
-              disabled={exporting}
-            >
-              {exporting ? "Exporting…" : `Export PNG (${effectiveW} × ${effectiveH})`}
-            </button>
-          </div>
-        </section>
-
-        <section>
-          <h2>Patterns</h2>
-          <div
-            className={`drop-hint${dragging ? " dragging" : ""}`}
-            onDragOver={handleDragOver}
-            onDragLeave={handleDragLeave}
-            onDrop={handleDrop}
-          >
-            Drop an image here
-          </div>
-          <div className="gallery" style={{ marginTop: 12 }}>
-            {allTiles.map((tile, i) => (
-              <button
-                key={i}
-                className={`gallery-item${i === activeIndex ? " active" : ""}`}
-              onClick={() => {
-                setBg(tile.src);
-                setBgName(tile.alt);
-                setActiveIndex(i);
-              }}
-              >
-                <img src={tile.src} alt={tile.alt} title={tile.title} />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        {snapshots.length > 0 && (
+      <GlassDistortionFilter />
+      <aside className="sidebar" aria-label="Controls sidebar">
+        <section className="glass-card tile-card">
           <section>
-            <h2>Exports</h2>
-            <div className="reel">
-              {snapshots.map((url, i) => (
-                <a key={i} href={url} download="tile-buddy.png">
-                  <img src={url} alt={`Export ${i + 1}`} />
-                </a>
-              ))}
+            <h2>Tile Scale</h2>
+            <div className="control-row">
+              <input
+                type="range"
+                min={20}
+                max={1500}
+                value={size}
+                onChange={(e) => setSize(Number(e.target.value))}
+              />
+              <span className="size-value">{size}px</span>
             </div>
           </section>
-        )}
+
+          <section>
+            <h2>Export Size</h2>
+            <div className="export-controls">
+              <div className="size-inputs">
+                <div className="size-input-group">
+                  <label>Width</label>
+                  <div className="number-input-wrap">
+                    <input
+                      type="number"
+                      value={exportW}
+                      min={MIN_EXPORT_DIMENSION}
+                      max={MAX_EXPORT_DIMENSION}
+                      onChange={(e) => setWidth(Number(e.target.value))}
+                    />
+                    <div className="number-stepper">
+                      <button
+                        type="button"
+                        aria-label="Increase width"
+                        onClick={() => nudgeDimension(exportW, setWidth, 1)}
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Decrease width"
+                        onClick={() => nudgeDimension(exportW, setWidth, -1)}
+                      >
+                        -
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <button
+                  className={`size-link${linked ? " linked" : ""}`}
+                  onClick={toggleLinked}
+                  title={linked ? "Unlink dimensions" : "Link dimensions"}
+                >
+                  <LinkStateIcon linked={linked} />
+                </button>
+                <div className="size-input-group">
+                  <label>Height</label>
+                  <div className="number-input-wrap">
+                    <input
+                      type="number"
+                      value={exportH}
+                      min={MIN_EXPORT_DIMENSION}
+                      max={MAX_EXPORT_DIMENSION}
+                      onChange={(e) => setHeight(Number(e.target.value))}
+                    />
+                    <div className="number-stepper">
+                      <button
+                        type="button"
+                        aria-label="Increase height"
+                        onClick={() => nudgeDimension(exportH, setHeight, 1)}
+                      >
+                        +
+                      </button>
+                      <button
+                        type="button"
+                        aria-label="Decrease height"
+                        onClick={() => nudgeDimension(exportH, setHeight, -1)}
+                        className="decrement-btn"
+                      >
+                        −
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="size-presets">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.label}
+                    onClick={() => applyPreset(p.w, p.h)}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+              <label className="toggle-row">
+                <input
+                  type="checkbox"
+                  checked={maintainTile}
+                  onChange={(e) => setMaintainTile(e.target.checked)}
+                />
+                <span>Maintain tile</span>
+                {maintainTile && (effectiveW !== exportW || effectiveH !== exportH) && (
+                  <span className="snap-hint">
+                    → {effectiveW} × {effectiveH}
+                  </span>
+                )}
+              </label>
+              <button
+                className="export-btn"
+                onClick={handleExport}
+                disabled={exporting}
+              >
+                {exporting ? "Exporting…" : `Export PNG (${effectiveW} × ${effectiveH})`}
+              </button>
+            </div>
+          </section>
+
+          {snapshots.length > 0 && (
+            <section>
+              <h2>Exports</h2>
+              <div className="reel">
+                {snapshots.map((url, i) => (
+                  <a key={i} href={url} download="tile-buddy.png">
+                    <img src={url} alt={`Export ${i + 1}`} />
+                  </a>
+                ))}
+              </div>
+            </section>
+          )}
+        </section>
+
+        <section className="glass-card patterns-card">
+          <div className="patterns-card-scroll">
+            <section>
+              <h2>Patterns</h2>
+              <div
+                className={`drop-hint${dragging ? " dragging" : ""}`}
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                Drop an image here
+              </div>
+              <div className="gallery" style={{ marginTop: 12 }}>
+                {allTiles.map((tile, i) => (
+                  <button
+                    key={i}
+                    className={`gallery-item${i === activeIndex ? " active" : ""}`}
+                    onClick={() => {
+                      setBg(tile.src);
+                      setBgName(tile.alt);
+                      setActiveIndex(i);
+                    }}
+                  >
+                    <img src={tile.src} alt={tile.alt} title={tile.title} />
+                  </button>
+                ))}
+              </div>
+            </section>
+          </div>
+        </section>
       </aside>
 
       <div
