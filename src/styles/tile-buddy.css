@@ -498,17 +498,21 @@ body {
   border-radius: 6px;
   overflow: hidden;
   border: 2px solid transparent;
+  transform: translate3d(0, 0, 0) scale(1);
+  transform-origin: center;
+  backface-visibility: hidden;
+  will-change: transform;
   transition:
     border-color 0.15s,
-    scale 0.15s;
-
+    transform 0.15s ease;
   &:last-child {
     padding-bottom: 1rem;
   }
 }
 
 .gallery-item:hover {
-  scale: 1.08;
+  transform: translate3d(0, 0, 0) scale(1.08);
+  will-change: transform;
 }
 
 .gallery-item.active {
@@ -520,6 +524,7 @@ body {
   height: 100%;
   object-fit: cover;
   display: block;
+  will-change: transform;
 }
 
 /* ── Drop zone hint ── */
@@ -622,7 +627,6 @@ body {
   margin-bottom: 4px;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid #333;
   display: block;
 }
 
