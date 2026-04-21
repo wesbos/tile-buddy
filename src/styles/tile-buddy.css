@@ -86,6 +86,13 @@ body {
   pointer-events: none;
 }
 
+/* Firefox fallback: issues using backdrop-filter in ::after */
+@supports (-moz-appearance: none) {
+  .glass-card {
+    backdrop-filter: blur(18px);
+  }
+}
+
 .tile-card {
   flex: 0 0 auto;
 }
@@ -158,8 +165,8 @@ body {
 }
 
 .control-row input[type="range"]::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: transparent;
   border: 3px solid rgb(255 255 255 / 0.95);
