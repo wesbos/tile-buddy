@@ -151,19 +151,12 @@ body {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: linear-gradient(
-    155deg,
-    rgb(255 255 255) 0%,
-    rgb(236 244 255) 34%,
-    rgb(197 211 233) 68%,
-    rgb(169 184 210) 100%
-  );
+  background: transparent;
   cursor: pointer;
-  border: 1px solid rgb(173 188 213);
+  border: 3px solid rgb(255 255 255 / 0.95);
   box-shadow:
-    0 5px 12px rgba(0, 0, 0, 0.34),
-    inset 0 1px 1px rgb(255 255 255),
-    inset 0 -2px 4px rgb(145 162 192);
+    0 2px 6px rgb(0 0 0 / 0.35),
+    inset 0 1px 1px rgb(255 255 255 / 0.35);
   transition:
     transform 0.15s ease,
     box-shadow 0.2s ease;
@@ -598,15 +591,35 @@ body {
   display: flex;
   gap: 6px;
   overflow-x: auto;
-  padding: 4px 0;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  padding: 4px 0 3px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) rgba(255, 255, 255, 0.08);
+}
+
+.reel::-webkit-scrollbar {
+  height: 6px;
+}
+
+.reel::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+}
+
+.reel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.reel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.38);
 }
 
 .reel a {
   flex-shrink: 0;
   width: 60px;
   height: 60px;
+  margin-bottom: 4px;
   border-radius: 6px;
   overflow: hidden;
   border: 1px solid #333;
